@@ -1,7 +1,7 @@
-package view;
+package com.carsmotors.view;
 
-import controller.ClienteController;
-import model.Cliente;
+import com.carsmotors.controller.ClienteController;
+import com.carsmotors.model.Cliente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +23,10 @@ public class ClienteDialog extends JDialog {
     private ClienteController controller;
     private Cliente cliente;
     private boolean esNuevo;
+    
+    
+    
+    
     
     public ClienteDialog(JFrame parent, String title, Cliente cliente) {
         super(parent, title, true);
@@ -50,7 +54,7 @@ public class ClienteDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
         
-        // Nombre
+        // nombre
         panel.add(new JLabel("Nombre:"), gbc);
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -58,7 +62,10 @@ public class ClienteDialog extends JDialog {
         txtNombre = new JTextField(20);
         panel.add(txtNombre, gbc);
         
-        // Identificación
+        // identificacion
+        
+        
+        
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0;
@@ -78,7 +85,7 @@ public class ClienteDialog extends JDialog {
         txtTelefono = new JTextField(20);
         panel.add(txtTelefono, gbc);
         
-        // Email
+         // Email
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
