@@ -3,6 +3,7 @@ package com.carsmotors.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Clase para gestionar la conexion a la Base de Datos
@@ -15,7 +16,7 @@ public class DatabaseConnection {
     // configuracion Inicial  de la Base de datos
     private static final String URL = "jdbc:mysql://localhost:3306/taller_automotriz";
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "oscar2429";
     
     private DatabaseConnection() {
         try {
