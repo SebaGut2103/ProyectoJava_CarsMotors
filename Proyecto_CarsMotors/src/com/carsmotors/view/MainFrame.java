@@ -1,9 +1,14 @@
 package com.carsmotors.view;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
+import com.carsmotors.controller.ClienteController;
+import com.carsmotors.model.Cliente;
 
 /**
  * Ventana principal del sistema
@@ -213,17 +218,22 @@ public class MainFrame extends JFrame {
      * Panel para la gestión de clientes
      */
     private class ClientesPanel extends ContentPanel {
+        private JTable table;
+        private ClienteController controller;
+        
         public ClientesPanel() {
             super("Gestión de Clientes");
+            
+            controller = new ClienteController();
             
             // Aquí se implementaría la interfaz para gestionar clientes
             JPanel panel = new JPanel(new BorderLayout());
             
             // Tabla de clientes
             String[] columnas = {"ID", "Nombre", "Identificación", "Teléfono", "Email", "Dirección"};
-            Object[][] datos = {}; // Aquí se cargarían los datos reales
+            Object[][] datos = {}; // Inicialmente vacío
             
-            JTable table = new JTable(datos, columnas);
+            table = new JTable(new DefaultTableModel(datos, columnas));
             JScrollPane scrollPane = new JScrollPane(table);
             panel.add(scrollPane, BorderLayout.CENTER);
             
@@ -233,6 +243,66 @@ public class MainFrame extends JFrame {
             JButton btnEditar = new JButton("Editar");
             JButton btnEliminar = new JButton("Eliminar");
             
+            btnNuevo.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ClienteDialog dialog = new ClienteDialog(MainFrame.this, "Nuevo Cliente", null);
+                    dialog.setVisible(true);
+                    cargarDatosClientes(); // Recargar después de agregar
+                }
+            });
+            
+            btnEditar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int filaSeleccionada = table.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        int id = Integer.parseInt(table.getValueAt(filaSeleccionada, 0).toString());
+                        Cliente cliente = controller.buscarClientePorId(id);
+                        if (cliente != null) {
+                            ClienteDialog dialog = new ClienteDialog(MainFrame.this, "Editar Cliente", cliente);
+                            dialog.setVisible(true);
+                            cargarDatosClientes(); // Recargar después de editar
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.this, 
+                            "Por favor, seleccione un cliente para editar", 
+                            "Selección requerida", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+            
+            btnEliminar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int filaSeleccionada = table.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        int id = Integer.parseInt(table.getValueAt(filaSeleccionada, 0).toString());
+                        int confirmacion = JOptionPane.showConfirmDialog(MainFrame.this,
+                            "¿Está seguro de eliminar este cliente?", "Confirmar eliminación",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            boolean resultado = controller.eliminarCliente(id);
+                            if (resultado) {
+                                JOptionPane.showMessageDialog(MainFrame.this, 
+                                    "Cliente eliminado correctamente", "Éxito", 
+                                    JOptionPane.INFORMATION_MESSAGE);
+                                cargarDatosClientes(); // Recargar después de eliminar
+                            } else {
+                                JOptionPane.showMessageDialog(MainFrame.this, 
+                                    "Error al eliminar el cliente", "Error", 
+                                    JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.this, 
+                            "Por favor, seleccione un cliente para eliminar", 
+                            "Selección requerida", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+            
             buttonPanel.add(btnNuevo);
             buttonPanel.add(btnEditar);
             buttonPanel.add(btnEliminar);
@@ -240,6 +310,33 @@ public class MainFrame extends JFrame {
             panel.add(buttonPanel, BorderLayout.SOUTH);
             
             add(panel, BorderLayout.CENTER);
+            
+            // Cargar datos al iniciar
+            cargarDatosClientes();
+        }
+        
+        private void cargarDatosClientes() {
+            try {
+                List<Cliente> clientes = controller.listarClientes();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0); // Limpiar tabla
+                
+                for (Cliente cliente : clientes) {
+                    model.addRow(new Object[]{
+                        cliente.getId(),
+                        cliente.getNombre(),
+                        cliente.getIdentificacion(),
+                        cliente.getTelefono(),
+                        cliente.getEmail(),
+                        cliente.getDireccion()
+                    });
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Error al cargar los clientes: " + e.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
         }
     }
     
@@ -334,3 +431,4 @@ public class MainFrame extends JFrame {
         }
     }
 }
+
