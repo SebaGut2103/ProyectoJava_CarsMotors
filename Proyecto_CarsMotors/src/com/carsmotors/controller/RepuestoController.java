@@ -120,4 +120,8 @@ public class RepuestoController {
         repuesto.setStockActual(repuesto.getStockActual() + cantidad);
         return repuestoDAO.actualizar(repuesto);
     }
+
+    boolean verificarDisponibilidad(int idRepuesto, int cantidad) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

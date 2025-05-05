@@ -1,40 +1,29 @@
 package com.carsmotors.model;
 
-/**
- * Clase que representa el detalle de un servicio en una orden
- */
 public class DetalleServicio {
-    private int id;
+    private int idDetalleServicio;
     private int idOrdenServicio;
     private int idServicio;
-    private Servicio servicio; // Objeto para mantener detallado el Servicio
+    private Servicio servicio;
     
-  
+    
     public DetalleServicio() {
     }
     
-    
-    public DetalleServicio(int id, int idOrdenServicio, int idServicio) {
-        this.id = id;
+  
+    public DetalleServicio(int idDetalleServicio, int idOrdenServicio, int idServicio) {
+        this.idDetalleServicio = idDetalleServicio;
         this.idOrdenServicio = idOrdenServicio;
         this.idServicio = idServicio;
     }
     
-    // Constructor sin ID para nuevos detalles
-    public DetalleServicio(int idOrdenServicio, int idServicio) {
-        this.idOrdenServicio = idOrdenServicio;
-        this.idServicio = idServicio;
+   
+    public int getIdDetalleServicio() {
+        return idDetalleServicio;
     }
     
-    
-    
-    
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
+    public void setIdDetalleServicio(int idDetalleServicio) {
+        this.idDetalleServicio = idDetalleServicio;
     }
     
     public int getIdOrdenServicio() {
@@ -59,8 +48,5 @@ public class DetalleServicio {
     
     public void setServicio(Servicio servicio) {
         this.servicio = servicio;
-        if (servicio != null) {
-            this.idServicio = servicio.getId();
-        }
     }
 }

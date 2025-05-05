@@ -1,41 +1,31 @@
 package com.carsmotors.model;
 
-/**
- * Clase que representa un repuesto usado en una orden de servicio
- */
 public class RepuestoUsado {
-    private int id;
+    private int idRepuestoUsado;
     private int idOrdenServicio;
     private int idRepuesto;
     private int cantidad;
-    private Repuesto repuesto; // Objeto para mantener los detalles 
+    private Repuesto repuesto;
     
     
     public RepuestoUsado() {
     }
     
     
-    public RepuestoUsado(int id, int idOrdenServicio, int idRepuesto, int cantidad) {
-        this.id = id;
+    public RepuestoUsado(int idRepuestoUsado, int idOrdenServicio, int idRepuesto, int cantidad) {
+        this.idRepuestoUsado = idRepuestoUsado;
         this.idOrdenServicio = idOrdenServicio;
         this.idRepuesto = idRepuesto;
         this.cantidad = cantidad;
     }
     
-   
-    public RepuestoUsado(int idOrdenServicio, int idRepuesto, int cantidad) {
-        this.idOrdenServicio = idOrdenServicio;
-        this.idRepuesto = idRepuesto;
-        this.cantidad = cantidad;
+    
+    public int getIdRepuestoUsado() {
+        return idRepuestoUsado;
     }
     
-  
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
+    public void setIdRepuestoUsado(int idRepuestoUsado) {
+        this.idRepuestoUsado = idRepuestoUsado;
     }
     
     public int getIdOrdenServicio() {
@@ -68,16 +58,5 @@ public class RepuestoUsado {
     
     public void setRepuesto(Repuesto repuesto) {
         this.repuesto = repuesto;
-        if (repuesto != null) {
-            this.idRepuesto = repuesto.getId();
-        }
-    }
-    
-  
-    public double calcularSubtotal() {
-        if (repuesto != null) {
-            return repuesto.getPrecioUnitario() * cantidad;
-        }
-        return 0;
     }
 }
