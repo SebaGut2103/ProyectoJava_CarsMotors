@@ -2,11 +2,8 @@ package com.carsmotors.model;
 
 import java.util.Date;
 
-/**
- * Clase que representa una factura en el sistema
- */
 public class Factura {
-    private int id;
+    private int idFactura;
     private Date fecha;
     private double subtotal;
     private double iva;
@@ -22,9 +19,9 @@ public class Factura {
     }
     
     // Constructor completo
-    public Factura(int id, Date fecha, double subtotal, double iva, double total, 
+    public Factura(int idFactura, Date fecha, double subtotal, double iva, double total, 
                   String estado, String cufe, String qrCode, int idCliente, int idOrdenServicio) {
-        this.id = id;
+        this.idFactura = idFactura;
         this.fecha = fecha;
         this.subtotal = subtotal;
         this.iva = iva;
@@ -49,12 +46,12 @@ public class Factura {
     }
     
     // Getters y Setters
-    public int getId() {
-        return id;
+    public int getIdFactura() {
+        return idFactura;
     }
     
-    public void setId(int id) {
-        this.id = id;
+    public void setIdFactura(int idFactura) {
+        this.idFactura = idFactura;
     }
     
     public Date getFecha() {
@@ -132,12 +129,16 @@ public class Factura {
     // Método para generar el CUFE (Código Único de Facturación Electrónica)
     public void generarCUFE() {
         // Implementación simplificada para generar un CUFE
-        this.cufe = "CUFE-" + System.currentTimeMillis() + "-" + id;
+        this.cufe = "CUFE-" + System.currentTimeMillis() + "-" + idFactura;
     }
     
     // Método para generar el código QR
     public void generarQR() {
         // Implementación simplificada para generar un código QR
-        this.qrCode = "https://taller-carmotors.com/facturas/" + id;
+        this.qrCode = "https://taller-carmotors.com/facturas/" + idFactura;
+    }
+
+    public boolean getId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
