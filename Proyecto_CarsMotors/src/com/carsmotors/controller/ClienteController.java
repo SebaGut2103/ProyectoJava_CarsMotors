@@ -89,5 +89,9 @@ public class ClienteController {
         
         return clienteDAO.eliminar(id);
     }
+
+    public List<Cliente> listarClientes() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
 

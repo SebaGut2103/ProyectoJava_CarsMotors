@@ -2,8 +2,11 @@ package com.carsmotors.model;
 
 import java.util.Date;
 
+/**
+ * Clase que representa una factura
+ */
 public class Factura {
-    private int idFactura;
+    private int id;
     private Date fecha;
     private double subtotal;
     private double iva;
@@ -14,14 +17,22 @@ public class Factura {
     private int idCliente;
     private int idOrdenServicio;
     
-    // Constructor vacío
+    // Relaciones
+    private Cliente cliente;
+    private OrdenServicio ordenServicio;
+    
+    /**
+     * Constructor vacío
+     */
     public Factura() {
     }
     
-    // Constructor completo
-    public Factura(int idFactura, Date fecha, double subtotal, double iva, double total, 
-                  String estado, String cufe, String qrCode, int idCliente, int idOrdenServicio) {
-        this.idFactura = idFactura;
+    /**
+     * Constructor con todos los campos
+     */
+    public Factura(int id, Date fecha, double subtotal, double iva, double total, String estado, 
+                  String cufe, String qrCode, int idCliente, int idOrdenServicio) {
+        this.id = id;
         this.fecha = fecha;
         this.subtotal = subtotal;
         this.iva = iva;
@@ -33,25 +44,30 @@ public class Factura {
         this.idOrdenServicio = idOrdenServicio;
     }
     
-    // Constructor sin ID para nuevas facturas
-    public Factura(Date fecha, double subtotal, double iva, double total, 
-                  String estado, int idCliente, int idOrdenServicio) {
+    /**
+     * Constructor sin ID (para nuevas facturas)
+     */
+    public Factura(Date fecha, double subtotal, double iva, double total, String estado, 
+                  String cufe, String qrCode, int idCliente, int idOrdenServicio) {
         this.fecha = fecha;
         this.subtotal = subtotal;
         this.iva = iva;
         this.total = total;
         this.estado = estado;
+        this.cufe = cufe;
+        this.qrCode = qrCode;
         this.idCliente = idCliente;
         this.idOrdenServicio = idOrdenServicio;
     }
     
-    // Getters y Setters
-    public int getIdFactura() {
-        return idFactura;
+    // Getters y setters
+    
+    public int getId() {
+        return id;
     }
     
-    public void setIdFactura(int idFactura) {
-        this.idFactura = idFactura;
+    public void setId(int id) {
+        this.id = id;
     }
     
     public Date getFecha() {
@@ -126,19 +142,53 @@ public class Factura {
         this.idOrdenServicio = idOrdenServicio;
     }
     
-    // Método para generar el CUFE (Código Único de Facturación Electrónica)
-    public void generarCUFE() {
-        // Implementación simplificada para generar un CUFE
-        this.cufe = "CUFE-" + System.currentTimeMillis() + "-" + idFactura;
+    public Cliente getCliente() {
+        return cliente;
     }
     
-    // Método para generar el código QR
-    public void generarQR() {
-        // Implementación simplificada para generar un código QR
-        this.qrCode = "https://taller-carmotors.com/facturas/" + idFactura;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        if (cliente != null) {
+            this.idCliente = cliente.getId();
+        }
+    }
+    
+    public OrdenServicio getOrdenServicio() {
+        return ordenServicio;
+    }
+    
+    public void setOrdenServicio(OrdenServicio ordenServicio) {
+        this.ordenServicio = ordenServicio;
+        if (ordenServicio != null) {
+            this.idOrdenServicio = ordenServicio.getId();
+        }
+    }
+    
+    /**
+     * Calcula el total de la factura
+     */
+    public void calcularTotal() {
+        this.total = this.subtotal + this.iva;
+    }
+    
+    @Override
+    public String toString() {
+        return "Factura #" + id + " - " + estado;
     }
 
-    public boolean getId() {
+    public void generarCUFE() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void generarQR() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Object getIdFactura() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setIdFactura(int aInt) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

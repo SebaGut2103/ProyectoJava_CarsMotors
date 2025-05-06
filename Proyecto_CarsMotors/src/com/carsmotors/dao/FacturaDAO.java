@@ -14,9 +14,8 @@ public class FacturaDAO {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
     
-    /**
-     * Inserta una nueva factura en la base de datos
-     */
+   
+    
     public boolean insertar(Factura factura) {
         String sql = "INSERT INTO Factura (fecha, subtotal, iva, total, estado, cufe, qr_code, id_cliente, id_orden_servicio) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -48,9 +47,9 @@ public class FacturaDAO {
         }
     }
     
-    /**
-     * Actualiza una factura existente en la base de datos
-     */
+   
+    
+    
     public boolean actualizar(Factura factura) {
         String sql = "UPDATE Factura SET fecha = ?, subtotal = ?, iva = ?, total = ?, estado = ?, " +
                     "cufe = ?, qr_code = ?, id_cliente = ?, id_orden_servicio = ? WHERE id_factura = ?";
@@ -74,9 +73,9 @@ public class FacturaDAO {
         }
     }
     
-    /**
-     * Elimina una factura de la base de datos
-     */
+    
+    
+    
     public boolean eliminar(int idFactura) {
         String sql = "DELETE FROM Factura WHERE id_factura = ?";
         
@@ -111,9 +110,9 @@ public class FacturaDAO {
         return null;
     }
     
-    /**
-     * Busca facturas por ID de cliente
-     */
+   
+    
+    
     public List<Factura> buscarPorCliente(int idCliente) {
         List<Factura> facturas = new ArrayList<>();
         String sql = "SELECT * FROM Factura WHERE id_cliente = ? ORDER BY fecha DESC";
@@ -133,9 +132,8 @@ public class FacturaDAO {
         return facturas;
     }
     
-    /**
-     * Busca facturas por ID de orden de servicio
-     */
+    
+    
     public Factura buscarPorOrdenServicio(int idOrdenServicio) {
         String sql = "SELECT * FROM Factura WHERE id_orden_servicio = ?";
         
@@ -154,9 +152,9 @@ public class FacturaDAO {
         return null;
     }
     
-    /**
-     * Lista todas las facturas
-     */
+   
+    
+    
     public List<Factura> listarTodas() {
         List<Factura> facturas = new ArrayList<>();
         String sql = "SELECT * FROM Factura ORDER BY fecha DESC";
@@ -196,9 +194,7 @@ public class FacturaDAO {
         return facturas;
     }
     
-    /**
-     * Extrae un objeto Factura de un ResultSet
-     */
+   
     private Factura extraerFacturaDeResultSet(ResultSet rs) throws SQLException {
         Factura factura = new Factura();
         factura.setIdFactura(rs.getInt("id_factura"));

@@ -149,4 +149,8 @@ public class OrdenServicio {
         
         return costoServicios + costoRepuestos;
     }
+
+    int getId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
