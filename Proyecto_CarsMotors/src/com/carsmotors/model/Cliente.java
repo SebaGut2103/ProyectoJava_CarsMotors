@@ -1,8 +1,6 @@
 package com.carsmotors.model;
 
-/**
- * Clase que representa a un cliente del taller
- */
+
 public class Cliente {
     private int id;
     private String nombre;
@@ -11,11 +9,11 @@ public class Cliente {
     private String email;
     private String direccion;
     
-    
+   
     public Cliente() {
     }
     
-   
+  
     public Cliente(int id, String nombre, String identificacion, String telefono, String email, String direccion) {
         this.id = id;
         this.nombre = nombre;
@@ -34,7 +32,8 @@ public class Cliente {
         this.direccion = direccion;
     }
     
-
+    // Getters y setters
+    
     public int getId() {
         return id;
     }
@@ -88,3 +87,4 @@ public class Cliente {
         return nombre + " (" + identificacion + ")";
     }
 }
+

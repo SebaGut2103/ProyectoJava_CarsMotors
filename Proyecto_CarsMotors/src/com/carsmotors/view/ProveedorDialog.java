@@ -9,9 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Diálogo para crear o editar un proveedor
- */
+
 public class ProveedorDialog extends JDialog {
     private JTextField txtNombre;
     private JTextField txtNit;
@@ -53,9 +51,7 @@ public class ProveedorDialog extends JDialog {
         soundManager.playSound(SoundManager.SOUND_WINDOW_OPEN);
     }
     
-    /**
-     * Inicializa los componentes del diálogo
-     */
+   
     private void initComponents() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -150,9 +146,7 @@ public class ProveedorDialog extends JDialog {
         add(panel);
     }
     
-    /**
-     * Carga los datos del proveedor en los campos del formulario
-     */
+   
     private void cargarDatosProveedor() {
         if (proveedor != null) {
             txtNombre.setText(proveedor.getNombre());
@@ -163,9 +157,8 @@ public class ProveedorDialog extends JDialog {
         }
     }
     
-    /**
-     * Guarda los datos del proveedor
-     */
+   
+     
     private void guardarProveedor() {
         // Validar campos obligatorios
         if (txtNombre.getText().trim().isEmpty()) {
@@ -188,7 +181,7 @@ public class ProveedorDialog extends JDialog {
             return;
         }
         
-        // Crear o actualizar el objeto proveedor
+     
         if (esNuevo) {
             proveedor = new Proveedor();
         }

@@ -7,8 +7,7 @@ import java.sql.Statement;
 
 public class mainTest {
     public static void main(String[] args) {
-        DatabaseConnection db = DatabaseConnection.getInstance();
-        Connection conn = db.getConnection();
+        Connection conn = DatabaseConnection.getConnection();
         if (conn != null) {
             try {
                 Statement stmt = conn.createStatement();
@@ -22,10 +21,11 @@ public class mainTest {
             } catch (Exception e) {
                 System.err.println("Error durante la prueba: " + e.getMessage());
             } finally {
-                db.closeConnection();
+                DatabaseConnection.closeConnection(); // Llamar directamente
             }
         } else {
             System.err.println("No se pudo conectar.");
         }
     }
 }
+

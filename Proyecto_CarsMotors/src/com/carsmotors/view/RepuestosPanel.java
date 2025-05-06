@@ -9,45 +9,32 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Panel para la gestión de repuestos
  */
 public class RepuestosPanel extends JPanel {
-    private JTable tblRepuestos;
+    private JTable tablaRepuestos;
     private DefaultTableModel modeloTabla;
-    private JButton btnNuevo;
-    private JButton btnEditar;
-    private JButton btnEliminar;
-    private JButton btnVer;
+    private RepuestoController repuestoController;
     private JTextField txtBuscar;
     private JButton btnBuscar;
-    private JComboBox<String> cboFiltroTipo;
+    private JButton btnAgregar;
+    private JButton btnEditar;
+    private JButton btnEliminar;
+    private JButton btnRefrescar;
     
-    private RepuestoController controller;
-    private SoundManager soundManager;
-    
-    /**
-     * Constructor del panel
-     */
+   
     public RepuestosPanel() {
-        this.controller = new RepuestoController();
-        this.soundManager = SoundManager.getInstance();
+        repuestoController = new RepuestoController();
+        setLayout(new BorderLayout(10, 10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        initComponents();
-        cargarDatos();
-    }
-    
-    /**
-     * Inicializa los componentes del panel
-     */
-    private void initComponents() {
-        setLayout(new BorderLayout());
         
-        // Panel de título
         JPanel panelTitulo = new JPanel();
-        panelTitulo.setBackground(new Color(231, 76, 60)); // Rojo para repuestos
+        panelTitulo.setBackground(new Color(231, 76, 60)); // Rojo
         JLabel lblTitulo = new JLabel("Gestión de Repuestos");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         lblTitulo.setForeground(Color.WHITE);
@@ -55,216 +42,271 @@ public class RepuestosPanel extends JPanel {
         
         add(panelTitulo, BorderLayout.NORTH);
         
-        // Panel de filtros y búsqueda
-        JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        
-        panelFiltros.add(new JLabel("Tipo:"));
-        cboFiltroTipo = new JComboBox<>(new String[]{"Todos", "Mecánico", "Eléctrico", "Carrocería", "Consumo"});
-        cboFiltroTipo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
-                cargarDatos();
-            }
-        });
-        panelFiltros.add(cboFiltroTipo);
-        
-        panelFiltros.add(new JLabel("Buscar:"));
-        txtBuscar = new JTextField(15);
-        panelFiltros.add(txtBuscar);
-        
+      
+        JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel lblBuscar = new JLabel("Buscar repuesto:");
+        txtBuscar = new JTextField(20);
         btnBuscar = new JButton("Buscar");
-        btnBuscar.setIcon(new ImageIcon(getClass().getResource("/images/search.png")));
-        btnBuscar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
-                buscarRepuestos();
-            }
-        });
-        panelFiltros.add(btnBuscar);
+        btnBuscar.setIcon(createSafeIcon("/images/icons/search.png"));
         
-        add(panelFiltros, BorderLayout.SOUTH);
+        panelBusqueda.add(lblBuscar);
+        panelBusqueda.add(txtBuscar);
+        panelBusqueda.add(btnBuscar);
+        
+        
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnAgregar = new JButton("Agregar");
+        btnAgregar.setIcon(createSafeIcon("/images/icons/add.png"));
+        btnEditar = new JButton("Editar");
+        btnEditar.setIcon(createSafeIcon("/images/icons/edit.png"));
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.setIcon(createSafeIcon("/images/icons/delete.png"));
+        btnRefrescar = new JButton("Refrescar");
+        btnRefrescar.setIcon(createSafeIcon("/images/icons/refresh.png"));
+        
+        panelBotones.add(btnAgregar);
+        panelBotones.add(btnEditar);
+        panelBotones.add(btnEliminar);
+        panelBotones.add(btnRefrescar);
+        
+        // Panel superior que contiene búsqueda y botones
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.add(panelBusqueda, BorderLayout.WEST);
+        panelSuperior.add(panelBotones, BorderLayout.EAST);
+        
+        add(panelSuperior, BorderLayout.CENTER);
         
         // Tabla de repuestos
-        String[] columnas = {"ID", "Nombre", "Tipo", "Precio", "Stock", "Estado"};
-        modeloTabla = new DefaultTableModel(columnas, 0) {
+        modeloTabla = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return false; // Hacer que la tabla no sea editable directamente
             }
         };
         
-        tblRepuestos = new JTable(modeloTabla);
-        tblRepuestos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tblRepuestos.getTableHeader().setReorderingAllowed(false);
+       
+        modeloTabla.addColumn("ID");
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Tipo");
+        modeloTabla.addColumn("Marca Compatible");
+        modeloTabla.addColumn("Precio");
+        modeloTabla.addColumn("Stock");
+        modeloTabla.addColumn("Estado");
         
-        JScrollPane scrollPane = new JScrollPane(tblRepuestos);
-        add(scrollPane, BorderLayout.CENTER);
+        tablaRepuestos = new JTable(modeloTabla);
+        tablaRepuestos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaRepuestos.getTableHeader().setReorderingAllowed(false);
         
-        // Panel de botones
-        JPanel panelBotones = new JPanel();
         
-        btnNuevo = new JButton("Nuevo Repuesto");
-        btnNuevo.setIcon(new ImageIcon(getClass().getResource("/images/add.png")));
-        btnNuevo.addActionListener(new ActionListener() {
+        tablaRepuestos.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tablaRepuestos.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tablaRepuestos.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tablaRepuestos.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tablaRepuestos.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tablaRepuestos.getColumnModel().getColumn(5).setPreferredWidth(80);
+        tablaRepuestos.getColumnModel().getColumn(6).setPreferredWidth(100);
+        
+        JScrollPane scrollPane = new JScrollPane(tablaRepuestos);
+        add(scrollPane, BorderLayout.SOUTH);
+        
+        
+        btnBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
-                nuevoRepuesto();
+                buscarRepuestos();
             }
         });
         
-        btnEditar = new JButton("Editar");
-        btnEditar.setIcon(new ImageIcon(getClass().getResource("/images/edit.png")));
+        btnAgregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarRepuesto();
+            }
+        });
+        
         btnEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
                 editarRepuesto();
             }
         });
         
-        btnEliminar = new JButton("Eliminar");
-        btnEliminar.setIcon(new ImageIcon(getClass().getResource("/images/delete.png")));
         btnEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
                 eliminarRepuesto();
             }
         });
         
-        btnVer = new JButton("Ver Detalles");
-        btnVer.setIcon(new ImageIcon(getClass().getResource("/images/view.png")));
-        btnVer.addActionListener(new ActionListener() {
+        btnRefrescar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
-                verDetallesRepuesto();
+                cargarRepuestos();
             }
         });
         
-        panelBotones.add(btnNuevo);
-        panelBotones.add(btnEditar);
-        panelBotones.add(btnEliminar);
-        panelBotones.add(btnVer);
-        
-        add(panelBotones, BorderLayout.EAST);
+       
+        cargarRepuestos();
     }
     
-    /**
-     * Carga los datos de repuestos en la tabla
-     */
-    public void cargarDatos() {
-        // Limpiar la tabla
-        modeloTabla.setRowCount(0);
-        
-        // Obtener el filtro seleccionado
-        String filtroTipo = (String) cboFiltroTipo.getSelectedItem();
-        
-        // Cargar los datos según el filtro
-        List<Repuesto> repuestos;
-        if (filtroTipo.equals("Todos")) {
-            repuestos = controller.listarRepuestos();
-        } else {
-            repuestos = controller.listarRepuestosPorTipo(filtroTipo);
-        }
-        
-        // Llenar la tabla con los datos
-        for (Repuesto repuesto : repuestos) {
-            modeloTabla.addRow(new Object[]{
-                repuesto.getId(),
-                repuesto.getNombre(),
-                repuesto.getTipo(),
-                String.format("$%.2f", repuesto.getPrecioUnitario()),
-                repuesto.getStockActual(),
-                repuesto.getEstado()
-            });
+   
+    private ImageIcon createSafeIcon(String path) {
+        try {
+            return new ImageIcon(getClass().getResource(path));
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar el icono: " + path);
+            return null;
         }
     }
     
-    /**
-     * Busca repuestos por nombre o descripción
-     */
+   
+    private void cargarRepuestos() {
+        try {
+            // Limpiar tabla
+            modeloTabla.setRowCount(0);
+            
+            // Obtener repuestos
+            List<Repuesto> repuestos = repuestoController.obtenerTodosLosRepuestos();
+            
+            // Agregar repuestos a la tabla
+            for (Repuesto repuesto : repuestos) {
+                Object[] fila = {
+                    repuesto.getId(),
+                    repuesto.getNombre(),
+                    repuesto.getTipo(),
+                    repuesto.getMarcaCompatible(),
+                    repuesto.getPrecioUnitario(),
+                    repuesto.getStockActual(),
+                    repuesto.getEstado()
+                };
+                modeloTabla.addRow(fila);
+            }
+            
+            // Si no hay repuestos, mostrar mensaje
+            if (repuestos.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                    "No hay repuestos registrados en el sistema.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al cargar los repuestos: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    
+   
     private void buscarRepuestos() {
-        String termino = txtBuscar.getText().trim();
+        String textoBusqueda = txtBuscar.getText().trim();
         
-        if (termino.isEmpty()) {
-            cargarDatos(); // Si no hay término de búsqueda, mostrar todos
+        if (textoBusqueda.isEmpty()) {
+            cargarRepuestos();
             return;
         }
         
-        // Limpiar la tabla
-        modeloTabla.setRowCount(0);
-        
-        // Buscar repuestos que coincidan con el término
-        List<Repuesto> repuestos = controller.buscarRepuestos(termino);
-        
-        // Llenar la tabla con los resultados
-        for (Repuesto repuesto : repuestos) {
-            modeloTabla.addRow(new Object[]{
-                repuesto.getId(),
-                repuesto.getNombre(),
-                repuesto.getTipo(),
-                String.format("$%.2f", repuesto.getPrecioUnitario()),
-                repuesto.getStockActual(),
-                repuesto.getEstado()
-            });
-        }
-        
-        // Si no se encontraron resultados
-        if (modeloTabla.getRowCount() == 0) {
-            soundManager.playSound(SoundManager.SOUND_ERROR);
+        try {
+            
+            modeloTabla.setRowCount(0);
+            
+          
+            List<Repuesto> repuestos = repuestoController.buscarRepuestos(textoBusqueda);
+            
+           
+            for (Repuesto repuesto : repuestos) {
+                Object[] fila = {
+                    repuesto.getId(),
+                    repuesto.getNombre(),
+                    repuesto.getTipo(),
+                    repuesto.getMarcaCompatible(),
+                    repuesto.getPrecioUnitario(),
+                    repuesto.getStockActual(),
+                    repuesto.getEstado()
+                };
+                modeloTabla.addRow(fila);
+            }
+            
+            // Si no hay resultados, mostrar mensaje
+            if (repuestos.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                    "No se encontraron repuestos con el criterio de búsqueda: " + textoBusqueda,
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "No se encontraron repuestos con el término: " + termino,
-                "Sin resultados",
-                JOptionPane.INFORMATION_MESSAGE);
+                "Error al buscar repuestos: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
     
     /**
-     * Abre el diálogo para crear un nuevo repuesto
+     * Abre el diálogo para agregar un nuevo repuesto
      */
-    private void nuevoRepuesto() {
-        RepuestoDialog dialog = new RepuestoDialog(
-            (JFrame) SwingUtilities.getWindowAncestor(this),
-            "Nuevo Repuesto",
-            null
-        );
-        dialog.setVisible(true);
-        
-        // Recargar datos después de cerrar el diálogo
-        cargarDatos();
+    private void agregarRepuesto() {
+        try {
+            // Reproducir sonido
+            SoundManager.getInstance().playSound(SoundManager.SOUND_BUTTON_CLICK);
+            
+            // Crear y mostrar diálogo
+            RepuestoDialog dialog = new RepuestoDialog(SwingUtilities.getWindowAncestor(this), null);
+            dialog.setVisible(true);
+            
+            // Si se guardó un repuesto, refrescar la tabla
+            if (dialog.isRepuestoGuardado()) {
+                cargarRepuestos();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al abrir el diálogo de repuesto: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
     
     /**
-     * Abre el diálogo para editar un repuesto existente
+     * Abre el diálogo para editar un repuesto seleccionado
      */
     private void editarRepuesto() {
-        int filaSeleccionada = tblRepuestos.getSelectedRow();
+        int filaSeleccionada = tablaRepuestos.getSelectedRow();
         
-        if (filaSeleccionada >= 0) {
-            int idRepuesto = (int) tblRepuestos.getValueAt(filaSeleccionada, 0);
-            Repuesto repuesto = controller.buscarRepuestoPorId(idRepuesto);
-            
-            if (repuesto != null) {
-                RepuestoDialog dialog = new RepuestoDialog(
-                    (JFrame) SwingUtilities.getWindowAncestor(this),
-                    "Editar Repuesto",
-                    repuesto
-                );
-                dialog.setVisible(true);
-                
-                // Recargar datos después de cerrar el diálogo
-                cargarDatos();
-            }
-        } else {
-            soundManager.playSound(SoundManager.SOUND_ERROR);
+        if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this,
-                "Por favor, seleccione un repuesto para editar",
-                "Selección requerida",
+                "Por favor, seleccione un repuesto para editar.",
+                "Advertencia",
                 JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            // Reproducir sonido
+            SoundManager.getInstance().playSound(SoundManager.SOUND_BUTTON_CLICK);
+            
+            // Obtener ID del repuesto seleccionado
+            int idRepuesto = (int) tablaRepuestos.getValueAt(filaSeleccionada, 0);
+            
+            // Obtener repuesto
+            Repuesto repuesto = repuestoController.obtenerRepuestoPorId(idRepuesto);
+            
+            // Crear y mostrar diálogo
+            RepuestoDialog dialog = new RepuestoDialog(SwingUtilities.getWindowAncestor(this), repuesto);
+            dialog.setVisible(true);
+            
+            // Si se guardó un repuesto, refrescar la tabla
+            if (dialog.isRepuestoGuardado()) {
+                cargarRepuestos();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error al editar el repuesto: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
     
@@ -272,78 +314,69 @@ public class RepuestosPanel extends JPanel {
      * Elimina un repuesto seleccionado
      */
     private void eliminarRepuesto() {
-        int filaSeleccionada = tblRepuestos.getSelectedRow();
+        int filaSeleccionada = tablaRepuestos.getSelectedRow();
         
-        if (filaSeleccionada >= 0) {
-            int idRepuesto = (int) tblRepuestos.getValueAt(filaSeleccionada, 0);
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this,
+                "Por favor, seleccione un repuesto para eliminar.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            // Reproducir sonido
+            SoundManager.getInstance().playSound(SoundManager.SOUND_BUTTON_CLICK);
             
+            // Obtener ID del repuesto seleccionado
+            int idRepuesto = (int) tablaRepuestos.getValueAt(filaSeleccionada, 0);
+            String nombreRepuesto = (String) tablaRepuestos.getValueAt(filaSeleccionada, 1);
+            
+            // Confirmar eliminación
             int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de que desea eliminar este repuesto?",
+                "¿Está seguro de eliminar el repuesto " + nombreRepuesto + "?",
                 "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
             
             if (confirmacion == JOptionPane.YES_OPTION) {
-                boolean resultado = controller.eliminarRepuesto(idRepuesto);
+                // Eliminar repuesto
+                boolean eliminado = repuestoController.eliminarRepuesto(idRepuesto);
                 
-                if (resultado) {
-                    soundManager.playSound(SoundManager.SOUND_SUCCESS);
+                if (eliminado) {
+                    // Reproducir sonido de éxito
+                    SoundManager.getInstance().playSound(SoundManager.SOUND_SUCCESS);
+                    
                     JOptionPane.showMessageDialog(this,
-                        "Repuesto eliminado correctamente",
+                        "Repuesto eliminado correctamente.",
                         "Éxito",
                         JOptionPane.INFORMATION_MESSAGE);
                     
-                    // Recargar datos
-                    cargarDatos();
+                    // Refrescar tabla
+                    cargarRepuestos();
                 } else {
-                    soundManager.playSound(SoundManager.SOUND_ERROR);
+                    // Reproducir sonido de error
+                    SoundManager.getInstance().playSound(SoundManager.SOUND_ERROR);
+                    
                     JOptionPane.showMessageDialog(this,
-                        "Error al eliminar el repuesto",
+                        "No se pudo eliminar el repuesto. Puede tener registros asociados.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                 }
             }
-        } else {
-            soundManager.playSound(SoundManager.SOUND_ERROR);
-            JOptionPane.showMessageDialog(this,
-                "Por favor, seleccione un repuesto para eliminar",
-                "Selección requerida",
-                JOptionPane.WARNING_MESSAGE);
-        }
-    }
-    
-    /**
-     * Muestra los detalles de un repuesto
-     */
-    private void verDetallesRepuesto() {
-        int filaSeleccionada = tblRepuestos.getSelectedRow();
-        
-        if (filaSeleccionada >= 0) {
-            int idRepuesto = (int) tblRepuestos.getValueAt(filaSeleccionada, 0);
-            Repuesto repuesto = controller.buscarRepuestoPorId(idRepuesto);
-            
-            if (repuesto != null) {
-                StringBuilder mensaje = new StringBuilder();
-                mensaje.append("Repuesto #").append(repuesto.getId()).append("\n");
-                mensaje.append("Nombre: ").append(repuesto.getNombre()).append("\n");
-                mensaje.append("Tipo: ").append(repuesto.getTipo()).append("\n");
-                mensaje.append("Descripción: ").append(repuesto.getDescripcion()).append("\n");
-                mensaje.append("Precio Unitario: $").append(String.format("%.2f", repuesto.getPrecioUnitario())).append("\n");
-                mensaje.append("Stock Actual: ").append(repuesto.getStockActual()).append("\n");
-                mensaje.append("Stock Mínimo: ").append(repuesto.getStockMinimo()).append("\n");
-                mensaje.append("Estado: ").append(repuesto.getEstado()).append("\n");
-                mensaje.append("Ubicación: ").append(repuesto.getUbicacion());
-                
-                JOptionPane.showMessageDialog(this,
-                    mensaje.toString(),
-                    "Detalles del Repuesto",
-                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            // Reproducir sonido de error
+            try {
+                SoundManager.getInstance().playSound(SoundManager.SOUND_ERROR);
+            } catch (Exception ex) {
+                // Ignorar error de sonido
             }
-        } else {
-            soundManager.playSound(SoundManager.SOUND_ERROR);
+            
             JOptionPane.showMessageDialog(this,
-                "Por favor, seleccione un repuesto para ver sus detalles",
-                "Selección requerida",
-                JOptionPane.WARNING_MESSAGE);
+                "Error al eliminar el repuesto: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 }

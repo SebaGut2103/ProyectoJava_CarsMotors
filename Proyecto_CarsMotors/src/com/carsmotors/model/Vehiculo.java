@@ -1,7 +1,7 @@
 package com.carsmotors.model;
 
 /**
- * Clase que representa un vehículo en el sistema
+ * Clase que representa un vehículo
  */
 public class Vehiculo {
     private int id;
@@ -11,12 +11,13 @@ public class Vehiculo {
     private String tipo;
     private int anio;
     private int idCliente;
+    private Cliente cliente; // Relación con Cliente
     
-    // Constructor vacío
+   
     public Vehiculo() {
     }
     
-    // Constructor completo
+  
     public Vehiculo(int id, String matricula, String marca, String modelo, String tipo, int anio, int idCliente) {
         this.id = id;
         this.matricula = matricula;
@@ -27,7 +28,7 @@ public class Vehiculo {
         this.idCliente = idCliente;
     }
     
-    // Constructor sin ID para nuevos vehículos
+   
     public Vehiculo(String matricula, String marca, String modelo, String tipo, int anio, int idCliente) {
         this.matricula = matricula;
         this.marca = marca;
@@ -37,7 +38,8 @@ public class Vehiculo {
         this.idCliente = idCliente;
     }
     
-    // Getters y Setters
+    // Getters y setters
+    
     public int getId() {
         return id;
     }
@@ -92,6 +94,17 @@ public class Vehiculo {
     
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
+    }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        if (cliente != null) {
+            this.idCliente = cliente.getId();
+        }
     }
     
     @Override

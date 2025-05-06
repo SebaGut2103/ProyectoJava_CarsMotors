@@ -132,17 +132,15 @@ public class ProveedoresPanel extends JPanel {
         add(panelBotones, BorderLayout.EAST);
     }
     
-    /**
-     * Carga los datos de proveedores en la tabla
-     */
+   
     public void cargarDatos() {
-        // Limpiar la tabla
+       
         modeloTabla.setRowCount(0);
         
-        // Cargar todos los proveedores
+       
         List<Proveedor> proveedores = controller.listarProveedores();
         
-        // Llenar la tabla con los datos
+ 
         for (Proveedor proveedor : proveedores) {
             modeloTabla.addRow(new Object[]{
                 proveedor.getIdProveedor(),
@@ -161,17 +159,17 @@ public class ProveedoresPanel extends JPanel {
         String termino = txtBuscar.getText().trim();
         
         if (termino.isEmpty()) {
-            cargarDatos(); // Si no hay término de búsqueda, mostrar todos
+            cargarDatos(); 
             return;
         }
         
-        // Limpiar la tabla
+      
         modeloTabla.setRowCount(0);
         
-        // Buscar proveedores que coincidan con el término
+        
         List<Proveedor> proveedores = controller.buscarProveedores(termino);
         
-        // Llenar la tabla con los resultados
+        
         for (Proveedor proveedor : proveedores) {
             modeloTabla.addRow(new Object[]{
                 proveedor.getIdProveedor(),
@@ -183,9 +181,7 @@ public class ProveedoresPanel extends JPanel {
         }
     }
     
-    /**
-     * Abre el diálogo para crear un nuevo proveedor
-     */
+   
     private void nuevoProveedor() {
         ProveedorDialog dialog = new ProveedorDialog(
             (JFrame) SwingUtilities.getWindowAncestor(this),
@@ -194,13 +190,11 @@ public class ProveedoresPanel extends JPanel {
         );
         dialog.setVisible(true);
         
-        // Recargar datos después de cerrar el diálogo
+       
         cargarDatos();
     }
     
-    /**
-     * Abre el diálogo para editar un proveedor existente
-     */
+   
     private void editarProveedor() {
         int filaSeleccionada = tblProveedores.getSelectedRow();
         
@@ -216,7 +210,7 @@ public class ProveedoresPanel extends JPanel {
                 );
                 dialog.setVisible(true);
                 
-                // Recargar datos después de cerrar el diálogo
+               
                 cargarDatos();
             }
         } else {
@@ -252,7 +246,7 @@ public class ProveedoresPanel extends JPanel {
                         "Éxito",
                         JOptionPane.INFORMATION_MESSAGE);
                     
-                    // Recargar datos
+                    // Recargar los datos obtenifdos
                     cargarDatos();
                 } else {
                     soundManager.playSound(SoundManager.SOUND_ERROR);
@@ -271,9 +265,7 @@ public class ProveedoresPanel extends JPanel {
         }
     }
     
-    /**
-     * Muestra los detalles de un proveedor
-     */
+    
     private void verDetallesProveedor() {
         int filaSeleccionada = tblProveedores.getSelectedRow();
         
