@@ -7,9 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase DAO para operaciones CRUD de proveedores
- */
+
 public class ProveedorDAO {
     private Connection connection;
     
@@ -17,9 +15,7 @@ public class ProveedorDAO {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
     
-    /**
-     * Inserta un nuevo proveedor en la base de datos
-     */
+   
     public boolean insertar(Proveedor proveedor) {
         String sql = "INSERT INTO Proveedor (nombre, nit, direccion, contacto, frecuencia_suministro) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -47,9 +43,7 @@ public class ProveedorDAO {
         }
     }
     
-    /**
-     * Actualiza un proveedor existente en la base de datos
-     */
+   
     public boolean actualizar(Proveedor proveedor) {
         String sql = "UPDATE Proveedor SET nombre = ?, nit = ?, direccion = ?, " +
                     "contacto = ?, frecuencia_suministro = ? WHERE id_proveedor = ?";
@@ -69,9 +63,7 @@ public class ProveedorDAO {
         }
     }
     
-    /**
-     * Elimina un proveedor de la base de datos
-     */
+  
     public boolean eliminar(int id) {
         String sql = "DELETE FROM Proveedor WHERE id_proveedor = ?";
         
@@ -85,9 +77,7 @@ public class ProveedorDAO {
         }
     }
     
-    /**
-     * Busca un proveedor por su ID
-     */
+   
     public Proveedor buscarPorId(int id) {
         String sql = "SELECT * FROM Proveedor WHERE id_proveedor = ?";
         
@@ -106,9 +96,7 @@ public class ProveedorDAO {
         return null;
     }
     
-    /**
-     * Busca un proveedor por su NIT
-     */
+ 
     public Proveedor buscarPorNit(String nit) {
         String sql = "SELECT * FROM Proveedor WHERE nit = ?";
         
@@ -127,9 +115,7 @@ public class ProveedorDAO {
         return null;
     }
     
-    /**
-     * Lista todos los proveedores
-     */
+   
     public List<Proveedor> listarTodos() {
         List<Proveedor> proveedores = new ArrayList<>();
         String sql = "SELECT * FROM Proveedor ORDER BY nombre";
@@ -147,9 +133,7 @@ public class ProveedorDAO {
         return proveedores;
     }
     
-    /**
-     * Busca proveedores por nombre (búsqueda parcial)
-     */
+   
     public List<Proveedor> buscarPorNombre(String nombre) {
         List<Proveedor> proveedores = new ArrayList<>();
         String sql = "SELECT * FROM Proveedor WHERE nombre LIKE ? ORDER BY nombre";
@@ -169,9 +153,7 @@ public class ProveedorDAO {
         return proveedores;
     }
     
-    /**
-     * Extrae un objeto Proveedor de un ResultSet
-     */
+    
     private Proveedor extraerProveedorDeResultSet(ResultSet rs) throws SQLException {
         Proveedor proveedor = new Proveedor();
         proveedor.setIdProveedor(rs.getInt("id_proveedor"));

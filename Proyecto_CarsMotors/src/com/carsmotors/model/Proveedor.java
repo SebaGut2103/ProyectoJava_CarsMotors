@@ -1,21 +1,22 @@
 package com.carsmotors.model;
 
+
+
 public class Proveedor {
-    private int idProveedor;
+    private int id;
     private String nombre;
     private String nit;
     private String direccion;
     private String contacto;
     private String frecuenciaSuministro;
     
-    // Constructor vacío
+    
     public Proveedor() {
     }
     
-    // Constructor completo
-    public Proveedor(int idProveedor, String nombre, String nit, String direccion, 
-                    String contacto, String frecuenciaSuministro) {
-        this.idProveedor = idProveedor;
+   
+    public Proveedor(int id, String nombre, String nit, String direccion, String contacto, String frecuenciaSuministro) {
+        this.id = id;
         this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
@@ -23,9 +24,8 @@ public class Proveedor {
         this.frecuenciaSuministro = frecuenciaSuministro;
     }
     
-    // Constructor sin ID para nuevos proveedores
-    public Proveedor(String nombre, String nit, String direccion, 
-                    String contacto, String frecuenciaSuministro) {
+  
+    public Proveedor(String nombre, String nit, String direccion, String contacto, String frecuenciaSuministro) {
         this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
@@ -33,13 +33,14 @@ public class Proveedor {
         this.frecuenciaSuministro = frecuenciaSuministro;
     }
     
-    // Getters y Setters
-    public int getIdProveedor() {
-        return idProveedor;
+    // Getters y setters
+    
+    public int getId() {
+        return id;
     }
     
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setId(int id) {
+        this.id = id;
     }
     
     public String getNombre() {
@@ -86,4 +87,17 @@ public class Proveedor {
     public String toString() {
         return nombre + " (" + nit + ")";
     }
+
+    /**
+     *
+     * @return
+     */
+public int getIdProveedor() {
+    return id;
+}
+
+public void setIdProveedor(int idProveedor) {
+    this.id = idProveedor;
+}
+
 }
