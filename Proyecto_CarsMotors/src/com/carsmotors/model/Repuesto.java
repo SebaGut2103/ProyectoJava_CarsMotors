@@ -164,4 +164,12 @@ public class Repuesto {
     public boolean requiereReabastecimiento() {
         return stockActual <= stockMinimo;
     }
+
+    public void setUbicacion(String trim) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String getUbicacion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

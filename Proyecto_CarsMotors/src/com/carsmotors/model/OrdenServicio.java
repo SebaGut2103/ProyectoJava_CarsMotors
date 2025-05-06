@@ -1,14 +1,11 @@
 package com.carsmotors.model;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-/**
- * Clase que representa una orden de servicio
- */
 public class OrdenServicio {
-    private int id;
+    private int idOrdenServicio;
     private int idVehiculo;
     private int idTecnico;
     private Date fechaIngreso;
@@ -18,16 +15,16 @@ public class OrdenServicio {
     private List<DetalleServicio> detallesServicio;
     private List<RepuestoUsado> repuestosUsados;
     
-    // Constructor vacío
+   
     public OrdenServicio() {
         this.detallesServicio = new ArrayList<>();
         this.repuestosUsados = new ArrayList<>();
     }
     
-    // Constructor completo
-    public OrdenServicio(int id, int idVehiculo, int idTecnico, Date fechaIngreso, 
+   
+    public OrdenServicio(int idOrdenServicio, int idVehiculo, int idTecnico, Date fechaIngreso, 
                         Date fechaEntrega, String estado, String observaciones) {
-        this.id = id;
+        this.idOrdenServicio = idOrdenServicio;
         this.idVehiculo = idVehiculo;
         this.idTecnico = idTecnico;
         this.fechaIngreso = fechaIngreso;
@@ -38,7 +35,7 @@ public class OrdenServicio {
         this.repuestosUsados = new ArrayList<>();
     }
     
-    // Constructor sin ID para nuevas órdenes
+    // Constructor sin ID para nuevas órdenes EXPERIMENTAL
     public OrdenServicio(int idVehiculo, int idTecnico, Date fechaIngreso, 
                         String estado, String observaciones) {
         this.idVehiculo = idVehiculo;
@@ -51,12 +48,12 @@ public class OrdenServicio {
     }
     
     // Getters y Setters
-    public int getId() {
-        return id;
+    public int getIdOrdenServicio() {
+        return idOrdenServicio;
     }
     
-    public void setId(int id) {
-        this.id = id;
+    public void setIdOrdenServicio(int idOrdenServicio) {
+        this.idOrdenServicio = idOrdenServicio;
     }
     
     public int getIdVehiculo() {
@@ -131,19 +128,23 @@ public class OrdenServicio {
         this.repuestosUsados.add(repuesto);
     }
     
-    // Método para calcular el costo total de la orden
+  
     public double calcularCostoTotal() {
         double costoServicios = 0;
         double costoRepuestos = 0;
         
-        // Calcular costo de servicios
+       
         for (DetalleServicio detalle : detallesServicio) {
-            costoServicios += detalle.getServicio().getCostoManoObra();
+            if (detalle.getServicio() != null) {
+                costoServicios += detalle.getServicio().getCostoManoObra();
+            }
         }
         
-        // Calcular costo de repuestos
+        //  costo de repuestos
         for (RepuestoUsado repuesto : repuestosUsados) {
-            costoRepuestos += repuesto.getRepuesto().getPrecioUnitario() * repuesto.getCantidad();
+            if (repuesto.getRepuesto() != null) {
+                costoRepuestos += repuesto.getRepuesto().getPrecioUnitario() * repuesto.getCantidad();
+            }
         }
         
         return costoServicios + costoRepuestos;
