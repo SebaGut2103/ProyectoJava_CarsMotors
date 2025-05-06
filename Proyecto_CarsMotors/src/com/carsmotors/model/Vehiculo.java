@@ -98,4 +98,8 @@ public class Vehiculo {
     public String toString() {
         return marca + " " + modelo + " (" + matricula + ")";
     }
+
+    public void setCliente(Cliente cliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

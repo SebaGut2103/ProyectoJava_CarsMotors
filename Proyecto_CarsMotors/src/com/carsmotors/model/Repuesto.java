@@ -2,9 +2,7 @@ package com.carsmotors.model;
 
 import java.util.Date;
 
-/**
- * Clase que representa un repuesto en el inventario
- */
+
 public class Repuesto {
     private int id;
     private String nombre;
@@ -16,17 +14,17 @@ public class Repuesto {
     private int stockActual;
     private int stockMinimo;
     private Date fechaIngreso;
-    private int vidaUtilMeses;
+    private Integer vidaUtilMeses;
     private String estado;
     
-    // Constructor vacío
+   
     public Repuesto() {
     }
     
-    // Constructor completo
+  
     public Repuesto(int id, String nombre, String tipo, String marcaCompatible, String modeloCompatible, 
                    String descripcion, double precioUnitario, int stockActual, int stockMinimo, 
-                   Date fechaIngreso, int vidaUtilMeses, String estado) {
+                   Date fechaIngreso, Integer vidaUtilMeses, String estado) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -41,10 +39,12 @@ public class Repuesto {
         this.estado = estado;
     }
     
-    // Constructor sin ID para nuevos repuestos
+    /**
+     * Constructor sin ID (para nuevos repuestos)
+     */
     public Repuesto(String nombre, String tipo, String marcaCompatible, String modeloCompatible, 
                    String descripcion, double precioUnitario, int stockActual, int stockMinimo, 
-                   Date fechaIngreso, int vidaUtilMeses, String estado) {
+                   Date fechaIngreso, Integer vidaUtilMeses, String estado) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.marcaCompatible = marcaCompatible;
@@ -58,7 +58,8 @@ public class Repuesto {
         this.estado = estado;
     }
     
-    // Getters y Setters
+    // Getters y setters
+    
     public int getId() {
         return id;
     }
@@ -139,11 +140,11 @@ public class Repuesto {
         this.fechaIngreso = fechaIngreso;
     }
     
-    public int getVidaUtilMeses() {
+    public Integer getVidaUtilMeses() {
         return vidaUtilMeses;
     }
     
-    public void setVidaUtilMeses(int vidaUtilMeses) {
+    public void setVidaUtilMeses(Integer vidaUtilMeses) {
         this.vidaUtilMeses = vidaUtilMeses;
     }
     
@@ -155,22 +156,16 @@ public class Repuesto {
         this.estado = estado;
     }
     
-    // Método para compatibilidad con la interfaz gráfica
-    public String getUbicacion() {
-        return "No especificada"; // La tabla en la BD no tiene este campo
-    }
-    
-    public void setUbicacion(String ubicacion) {
-        // No hacer nada, ya que la tabla en la BD no tiene este campo
-    }
-    
     @Override
     public String toString() {
-        return nombre + " - " + tipo + " (" + stockActual + " unidades)";
+        return nombre + " (" + tipo + ")";
     }
-    
-    // Método para verificar si el stock está por debajo del mínimo
-    public boolean requiereReabastecimiento() {
-        return stockActual <= stockMinimo;
+
+    public String getUbicacion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setUbicacion(String trim) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

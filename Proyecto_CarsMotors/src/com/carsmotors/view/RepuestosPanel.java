@@ -26,15 +26,13 @@ public class RepuestosPanel extends JPanel {
     private JButton btnEliminar;
     private JButton btnRefrescar;
     
-    /**
-     * Constructor del panel de repuestos
-     */
+   
     public RepuestosPanel() {
         repuestoController = new RepuestoController();
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Panel de título
+        
         JPanel panelTitulo = new JPanel();
         panelTitulo.setBackground(new Color(231, 76, 60)); // Rojo
         JLabel lblTitulo = new JLabel("Gestión de Repuestos");
@@ -44,7 +42,7 @@ public class RepuestosPanel extends JPanel {
         
         add(panelTitulo, BorderLayout.NORTH);
         
-        // Panel de búsqueda
+      
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel lblBuscar = new JLabel("Buscar repuesto:");
         txtBuscar = new JTextField(20);
@@ -55,7 +53,7 @@ public class RepuestosPanel extends JPanel {
         panelBusqueda.add(txtBuscar);
         panelBusqueda.add(btnBuscar);
         
-        // Panel de botones
+        
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnAgregar = new JButton("Agregar");
         btnAgregar.setIcon(createSafeIcon("/images/icons/add.png"));
@@ -86,7 +84,7 @@ public class RepuestosPanel extends JPanel {
             }
         };
         
-        // Definir columnas
+       
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Tipo");
@@ -99,7 +97,7 @@ public class RepuestosPanel extends JPanel {
         tablaRepuestos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaRepuestos.getTableHeader().setReorderingAllowed(false);
         
-        // Ajustar ancho de columnas
+        
         tablaRepuestos.getColumnModel().getColumn(0).setPreferredWidth(50);
         tablaRepuestos.getColumnModel().getColumn(1).setPreferredWidth(150);
         tablaRepuestos.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -111,7 +109,7 @@ public class RepuestosPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tablaRepuestos);
         add(scrollPane, BorderLayout.SOUTH);
         
-        // Configurar listeners
+        
         btnBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,13 +145,11 @@ public class RepuestosPanel extends JPanel {
             }
         });
         
-        // Cargar datos iniciales
+       
         cargarRepuestos();
     }
     
-    /**
-     * Crea un icono de manera segura, devolviendo null si hay error
-     */
+   
     private ImageIcon createSafeIcon(String path) {
         try {
             return new ImageIcon(getClass().getResource(path));
@@ -163,9 +159,7 @@ public class RepuestosPanel extends JPanel {
         }
     }
     
-    /**
-     * Carga todos los repuestos en la tabla
-     */
+   
     private void cargarRepuestos() {
         try {
             // Limpiar tabla
@@ -204,9 +198,7 @@ public class RepuestosPanel extends JPanel {
         }
     }
     
-    /**
-     * Busca repuestos según el texto ingresado
-     */
+   
     private void buscarRepuestos() {
         String textoBusqueda = txtBuscar.getText().trim();
         
@@ -216,13 +208,13 @@ public class RepuestosPanel extends JPanel {
         }
         
         try {
-            // Limpiar tabla
+            
             modeloTabla.setRowCount(0);
             
-            // Buscar repuestos
+          
             List<Repuesto> repuestos = repuestoController.buscarRepuestos(textoBusqueda);
             
-            // Agregar repuestos a la tabla
+           
             for (Repuesto repuesto : repuestos) {
                 Object[] fila = {
                     repuesto.getId(),

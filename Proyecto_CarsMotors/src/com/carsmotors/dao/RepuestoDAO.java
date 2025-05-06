@@ -17,9 +17,7 @@ public class RepuestoDAO {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
     
-    /**
-     * Inserta un nuevo repuesto en la base de datos
-     */
+   
     public boolean insertar(Repuesto repuesto) {
         String sql = "INSERT INTO Repuesto (nombre, tipo, marca_compatible, modelo_compatible, " +
                     "descripcion, precio_unitario, stock_actual, stock_minimo, fecha_ingreso, " +
@@ -54,9 +52,7 @@ public class RepuestoDAO {
         }
     }
     
-    /**
-     * Actualiza un repuesto existente en la base de datos
-     */
+  
     public boolean actualizar(Repuesto repuesto) {
         String sql = "UPDATE Repuesto SET nombre = ?, tipo = ?, marca_compatible = ?, " +
                     "modelo_compatible = ?, descripcion = ?, precio_unitario = ?, " +

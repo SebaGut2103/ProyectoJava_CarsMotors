@@ -125,9 +125,7 @@ public class RepuestoController {
         return tipos;
     }
     
-    /**
-     * Obtiene los estados posibles para un repuesto
-     */
+ 
     public List<String> obtenerEstadosRepuestos() {
         List<String> estados = new ArrayList<>();
         estados.add("Disponible");

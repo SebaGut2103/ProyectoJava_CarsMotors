@@ -52,7 +52,7 @@ public class RepuestoDialog extends JDialog {
         setLocationRelativeTo(parent);
         setResizable(false);
         
-        // Reproducir sonido al abrir el diálogo
+       
         soundManager.playSound(SoundManager.SOUND_WINDOW_OPEN);
     }
 
@@ -60,9 +60,7 @@ public class RepuestoDialog extends JDialog {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    /**
-     * Inicializa los componentes del diálogo
-     */
+    
     private void initComponents() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -104,7 +102,7 @@ public class RepuestoDialog extends JDialog {
         JScrollPane scrollDescripcion = new JScrollPane(txtDescripcion);
         panel.add(scrollDescripcion, gbc);
         
-        // Precio Unitario
+        
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
@@ -114,7 +112,7 @@ public class RepuestoDialog extends JDialog {
         txtPrecioUnitario = new JTextField(25);
         panel.add(txtPrecioUnitario, gbc);
         
-        // Stock Actual
+   
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 0;
@@ -202,13 +200,11 @@ public class RepuestoDialog extends JDialog {
             txtStockActual.setText(String.valueOf(repuesto.getStockActual()));
             txtStockMinimo.setText(String.valueOf(repuesto.getStockMinimo()));
             cboEstado.setSelectedItem(repuesto.getEstado());
-            txtUbicacion.setText(repuesto.getUbicacion());
+            
         }
     }
     
-    /**
-     * Guarda los datos del repuesto
-     */
+  
     private void guardarRepuesto() {
         // Validar campos obligatorios
         if (txtNombre.getText().trim().isEmpty()) {
@@ -282,7 +278,7 @@ public class RepuestoDialog extends JDialog {
         repuesto.setStockActual(stockActual);
         repuesto.setStockMinimo(stockMinimo);
         repuesto.setEstado((String) cboEstado.getSelectedItem());
-        repuesto.setUbicacion(txtUbicacion.getText().trim());
+        
         
         boolean resultado;
         if (esNuevo) {
