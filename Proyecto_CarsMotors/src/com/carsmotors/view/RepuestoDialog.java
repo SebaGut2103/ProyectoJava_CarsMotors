@@ -55,6 +55,10 @@ public class RepuestoDialog extends JDialog {
         // Reproducir sonido al abrir el diálogo
         soundManager.playSound(SoundManager.SOUND_WINDOW_OPEN);
     }
+
+    RepuestoDialog(Window windowAncestor, Repuesto repuesto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     /**
      * Inicializa los componentes del diálogo
@@ -301,5 +305,9 @@ public class RepuestoDialog extends JDialog {
                 "Error", 
                 JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    boolean isRepuestoGuardado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -47,13 +47,13 @@ public class OrdenServicioDAO {
                     int idOrden = rs.getInt(1);
                     orden.setIdOrdenServicio(idOrden);
                     
-                    
+                    // Insertar detalles de servicio
                     for (DetalleServicio detalle : orden.getDetallesServicio()) {
                         detalle.setIdOrdenServicio(idOrden);
                         insertarDetalleServicio(detalle);
                     }
                     
-                    
+                    // Insertar repuestos usados
                     for (RepuestoUsado repuesto : orden.getRepuestosUsados()) {
                         repuesto.setIdOrdenServicio(idOrden);
                         insertarRepuestoUsado(repuesto);
@@ -69,9 +69,11 @@ public class OrdenServicioDAO {
         }
     }
     
-   
+    /**
+     * Inserta un detalle de servicio en la base de datos
+     */
     private boolean insertarDetalleServicio(DetalleServicio detalle) {
-        String sql = "INSERT INTO DetalleServicio (id_orden_servicio, id_servicio) VALUES (?, ?)";
+        String sql = "INSERT INTO Detalle_Servicio (id_orden_servicio, id_servicio) VALUES (?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, detalle.getIdOrdenServicio());
@@ -97,7 +99,7 @@ public class OrdenServicioDAO {
      * Inserta un repuesto usado en la base de datos
      */
     private boolean insertarRepuestoUsado(RepuestoUsado repuesto) {
-        String sql = "INSERT INTO RepuestoUsado (id_orden_servicio, id_repuesto, cantidad) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Repuesto_Usado (id_orden_servicio, id_repuesto, cantidad) VALUES (?, ?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, repuesto.getIdOrdenServicio());
@@ -173,7 +175,7 @@ public class OrdenServicioDAO {
      * Elimina los detalles de servicio de una orden
      */
     private boolean eliminarDetallesServicio(int idOrdenServicio) {
-        String sql = "DELETE FROM DetalleServicio WHERE id_orden_servicio = ?";
+        String sql = "DELETE FROM Detalle_Servicio WHERE id_orden_servicio = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idOrdenServicio);
@@ -189,7 +191,7 @@ public class OrdenServicioDAO {
      * Elimina los repuestos usados de una orden
      */
     private boolean eliminarRepuestosUsados(int idOrdenServicio) {
-        String sql = "DELETE FROM RepuestoUsado WHERE id_orden_servicio = ?";
+        String sql = "DELETE FROM Repuesto_Usado WHERE id_orden_servicio = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idOrdenServicio);
@@ -256,7 +258,7 @@ public class OrdenServicioDAO {
      */
     private List<DetalleServicio> buscarDetallesServicio(int idOrdenServicio) {
         List<DetalleServicio> detalles = new ArrayList<>();
-        String sql = "SELECT ds.*, s.* FROM DetalleServicio ds " +
+        String sql = "SELECT ds.*, s.* FROM Detalle_Servicio ds " +
                     "JOIN Servicio s ON ds.id_servicio = s.id_servicio " +
                     "WHERE ds.id_orden_servicio = ?";
         
@@ -267,7 +269,7 @@ public class OrdenServicioDAO {
             
             while (rs.next()) {
                 DetalleServicio detalle = new DetalleServicio();
-                detalle.setIdDetalleServicio(rs.getInt("id_detalle_servicio"));
+                detalle.setIdDetalleServicio(rs.getInt("id_detalle"));
                 detalle.setIdOrdenServicio(rs.getInt("id_orden_servicio"));
                 detalle.setIdServicio(rs.getInt("id_servicio"));
                 
@@ -295,7 +297,7 @@ public class OrdenServicioDAO {
      */
     private List<RepuestoUsado> buscarRepuestosUsados(int idOrdenServicio) {
         List<RepuestoUsado> repuestos = new ArrayList<>();
-        String sql = "SELECT ru.*, r.* FROM RepuestoUsado ru " +
+        String sql = "SELECT ru.*, r.* FROM Repuesto_Usado ru " +
                     "JOIN Repuesto r ON ru.id_repuesto = r.id_repuesto " +
                     "WHERE ru.id_orden_servicio = ?";
         

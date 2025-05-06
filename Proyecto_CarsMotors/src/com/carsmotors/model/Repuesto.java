@@ -155,6 +155,15 @@ public class Repuesto {
         this.estado = estado;
     }
     
+    // Método para compatibilidad con la interfaz gráfica
+    public String getUbicacion() {
+        return "No especificada"; // La tabla en la BD no tiene este campo
+    }
+    
+    public void setUbicacion(String ubicacion) {
+        // No hacer nada, ya que la tabla en la BD no tiene este campo
+    }
+    
     @Override
     public String toString() {
         return nombre + " - " + tipo + " (" + stockActual + " unidades)";
@@ -163,13 +172,5 @@ public class Repuesto {
     // Método para verificar si el stock está por debajo del mínimo
     public boolean requiereReabastecimiento() {
         return stockActual <= stockMinimo;
-    }
-
-    public void setUbicacion(String trim) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String getUbicacion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

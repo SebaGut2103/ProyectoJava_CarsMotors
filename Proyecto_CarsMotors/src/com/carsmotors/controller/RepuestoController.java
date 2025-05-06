@@ -3,10 +3,12 @@ package com.carsmotors.controller;
 import com.carsmotors.dao.RepuestoDAO;
 import com.carsmotors.model.Repuesto;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Controlador para la gestión de repuestos
+ * Controlador para operaciones relacionadas con repuestos
  */
 public class RepuestoController {
     private RepuestoDAO repuestoDAO;
@@ -16,67 +18,37 @@ public class RepuestoController {
     }
     
     /**
-     * Registra un nuevo repuesto
+     * Registra un nuevo repuesto en el sistema
      */
-    public boolean registrarRepuesto(Repuesto repuesto) {
-        // Validar datos del repuesto
-        if (repuesto.getNombre() == null || repuesto.getNombre().trim().isEmpty()) {
-            return false;
-        }
+    public boolean registrarRepuesto(String nombre, String tipo, String marcaCompatible, 
+                                    String modeloCompatible, String descripcion, double precioUnitario, 
+                                    int stockActual, int stockMinimo, Date fechaIngreso, 
+                                    int vidaUtilMeses, String estado) {
         
-        if (repuesto.getTipo() == null || repuesto.getTipo().trim().isEmpty()) {
-            return false;
-        }
-        
-        if (repuesto.getPrecioUnitario() <= 0) {
-            return false;
-        }
-        
-        if (repuesto.getStockActual() < 0) {
-            return false;
-        }
-        
-        if (repuesto.getStockMinimo() < 0) {
-            return false;
-        }
+        Repuesto repuesto = new Repuesto(nombre, tipo, marcaCompatible, modeloCompatible, 
+                                        descripcion, precioUnitario, stockActual, stockMinimo, 
+                                        fechaIngreso, vidaUtilMeses, estado);
         
         return repuestoDAO.insertar(repuesto);
     }
     
     /**
-     * Actualiza los datos de un repuesto
+     * Actualiza un repuesto existente
      */
-    public boolean actualizarRepuesto(Repuesto repuesto) {
-        // Validar datos del repuesto
-        if (repuesto.getId() <= 0) {
-            return false;
-        }
+    public boolean actualizarRepuesto(int id, String nombre, String tipo, String marcaCompatible, 
+                                     String modeloCompatible, String descripcion, double precioUnitario, 
+                                     int stockActual, int stockMinimo, Date fechaIngreso, 
+                                     int vidaUtilMeses, String estado) {
         
-        if (repuesto.getNombre() == null || repuesto.getNombre().trim().isEmpty()) {
-            return false;
-        }
-        
-        if (repuesto.getTipo() == null || repuesto.getTipo().trim().isEmpty()) {
-            return false;
-        }
-        
-        if (repuesto.getPrecioUnitario() <= 0) {
-            return false;
-        }
-        
-        if (repuesto.getStockActual() < 0) {
-            return false;
-        }
-        
-        if (repuesto.getStockMinimo() < 0) {
-            return false;
-        }
+        Repuesto repuesto = new Repuesto(id, nombre, tipo, marcaCompatible, modeloCompatible, 
+                                        descripcion, precioUnitario, stockActual, stockMinimo, 
+                                        fechaIngreso, vidaUtilMeses, estado);
         
         return repuestoDAO.actualizar(repuesto);
     }
     
     /**
-     * Elimina un repuesto
+     * Elimina un repuesto del sistema
      */
     public boolean eliminarRepuesto(int id) {
         return repuestoDAO.eliminar(id);
@@ -104,32 +76,79 @@ public class RepuestoController {
     }
     
     /**
+     * Verifica la disponibilidad de un repuesto
+     */
+    public boolean verificarDisponibilidad(int idRepuesto, int cantidadRequerida) {
+        Repuesto repuesto = repuestoDAO.buscarPorId(idRepuesto);
+        if (repuesto != null) {
+            return repuesto.getStockActual() >= cantidadRequerida && 
+                   "Disponible".equals(repuesto.getEstado());
+        }
+        return false;
+    }
+    
+    /**
+     * Lista repuestos por tipo
+     */
+    public List<Repuesto> listarRepuestosPorTipo(String tipo) {
+        return repuestoDAO.buscarPorTipo(tipo);
+    }
+    
+    /**
+     * Busca repuestos por nombre (búsqueda parcial)
+     */
+    public List<Repuesto> buscarRepuestos(String criterio) {
+        return repuestoDAO.buscarPorNombre(criterio);
+    }
+    
+    /**
      * Actualiza el stock de un repuesto
      */
-    public boolean actualizarStock(int idRepuesto, int cantidad) {
+    public boolean actualizarStock(int idRepuesto, int nuevoStock) {
         Repuesto repuesto = repuestoDAO.buscarPorId(idRepuesto);
-        if (repuesto == null) {
-            return false;
+        if (repuesto != null) {
+            repuesto.setStockActual(nuevoStock);
+            return repuestoDAO.actualizar(repuesto);
         }
-        
-        // No permitir stock negativo
-        if (repuesto.getStockActual() + cantidad < 0) {
-            return false;
-        }
-        
-        repuesto.setStockActual(repuesto.getStockActual() + cantidad);
-        return repuestoDAO.actualizar(repuesto);
+        return false;
+    }
+    
+    /**
+     * Obtiene los tipos de repuestos disponibles
+     */
+    public List<String> obtenerTiposRepuestos() {
+        List<String> tipos = new ArrayList<>();
+        tipos.add("Mecánico");
+        tipos.add("Eléctrico");
+        tipos.add("Carrocería");
+        tipos.add("Consumo");
+        return tipos;
+    }
+    
+    /**
+     * Obtiene los estados posibles para un repuesto
+     */
+    public List<String> obtenerEstadosRepuestos() {
+        List<String> estados = new ArrayList<>();
+        estados.add("Disponible");
+        estados.add("Reservado");
+        estados.add("Fuera de servicio");
+        return estados;
     }
 
-    boolean verificarDisponibilidad(int idRepuesto, int cantidad) {
+    public boolean registrarRepuesto(Repuesto repuesto) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public List<Repuesto> listarRepuestosPorTipo(String filtroTipo) {
+    public boolean actualizarRepuesto(Repuesto repuesto) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public List<Repuesto> buscarRepuestos(String termino) {
+    public Repuesto obtenerRepuestoPorId(int idRepuesto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Repuesto> obtenerTodosLosRepuestos() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

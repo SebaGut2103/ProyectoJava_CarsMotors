@@ -27,25 +27,24 @@ public class MainFrame extends JFrame {
     private JMenuBar menuBar;
     private SoundManager soundManager;
     
-    /**
-     * Constructor de la ventana principal
-     */
+    
+    
     public MainFrame() {
         setTitle("Sistema Taller Automotriz CarMotors");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        // Inicializar el gestor de sonidos
+    
         soundManager = SoundManager.getInstance();
         
-        // Inicializar componentes
+     
         initComponents();
         
-        // Mostrar panel de inicio por defecto
+      
         showPanel(new HomePanel());
         
-        // Reproducir sonido al abrir la ventana principal
+       
         try {
             soundManager.playSound(SoundManager.SOUND_WINDOW_OPEN);
         } catch (Exception e) {
@@ -68,9 +67,7 @@ public class MainFrame extends JFrame {
         });
     }
     
-    /**
-     * Inicializa los componentes de la ventana
-     */
+   
     private void initComponents() {
         // Panel principal
         mainPanel = new JPanel();
@@ -93,6 +90,7 @@ public class MainFrame extends JFrame {
         }
         itemRepuestos.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
+            // Usar la implementación real del panel de repuestos
             showPanel(new RepuestosPanel());
         });
         menuInventario.add(itemRepuestos);
@@ -105,7 +103,8 @@ public class MainFrame extends JFrame {
         }
         itemReabastecer.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ReabastecimientoPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Reabastecimiento de Inventario", new Color(41, 128, 185));
         });
         menuInventario.add(itemReabastecer);
         
@@ -121,6 +120,7 @@ public class MainFrame extends JFrame {
         }
         itemOrdenesServicio.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
+            // Usar la implementación real del panel de órdenes de servicio
             showPanel(new OrdenesServicioPanel());
         });
         menuMantenimiento.add(itemOrdenesServicio);
@@ -133,7 +133,8 @@ public class MainFrame extends JFrame {
         }
         itemServicios.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ServiciosPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Gestión de Servicios", new Color(230, 126, 34));
         });
         menuMantenimiento.add(itemServicios);
         
@@ -149,7 +150,15 @@ public class MainFrame extends JFrame {
         }
         itemClientes.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ClientesPanel());
+            try {
+                System.out.println("Creando instancia de ClientesPanel directamente");
+                ClientesPanel clientesPanel = new ClientesPanel();
+                showPanel(clientesPanel);
+            } catch (Exception ex) {
+                System.err.println("Error al crear ClientesPanel: " + ex.getMessage());
+                ex.printStackTrace();
+                showModuloEnDesarrollo("Gestión de Clientes (Error)", new Color(231, 76, 60));
+            }
         });
         menuClientes.add(itemClientes);
         
@@ -161,6 +170,7 @@ public class MainFrame extends JFrame {
         }
         itemFacturas.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
+            // Usar la implementación real del panel de facturas
             showPanel(new FacturasPanel());
         });
         menuClientes.add(itemFacturas);
@@ -177,6 +187,7 @@ public class MainFrame extends JFrame {
         }
         itemProveedores.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
+            // Usar la implementación real del panel de proveedores
             showPanel(new ProveedoresPanel());
         });
         menuProveedores.add(itemProveedores);
@@ -189,7 +200,8 @@ public class MainFrame extends JFrame {
         }
         itemCompras.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new OrdenesCompraPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Gestión de Órdenes de Compra", new Color(211, 84, 0));
         });
         menuProveedores.add(itemCompras);
         
@@ -205,7 +217,8 @@ public class MainFrame extends JFrame {
         }
         itemReporteInventario.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ReporteInventarioPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Reporte de Inventario", new Color(22, 160, 133));
         });
         menuReportes.add(itemReporteInventario);
         
@@ -217,7 +230,8 @@ public class MainFrame extends JFrame {
         }
         itemReporteServicios.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ReporteServiciosPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Reporte de Servicios", new Color(41, 128, 185));
         });
         menuReportes.add(itemReporteServicios);
         
@@ -229,7 +243,8 @@ public class MainFrame extends JFrame {
         }
         itemReporteVentas.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ReporteVentasPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showModuloEnDesarrollo("Reporte de Ventas", new Color(39, 174, 96));
         });
         menuReportes.add(itemReporteVentas);
         
@@ -241,7 +256,8 @@ public class MainFrame extends JFrame {
         }
         itemReporteProveedores.addActionListener(e -> {
             playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-            showPanel(new ReporteProveedoresPanel());
+            // Mostrar mensaje de módulo en desarrollo
+            showPanel(new RepuestosPanel());
         });
         menuReportes.add(itemReporteProveedores);
         
@@ -342,10 +358,53 @@ public class MainFrame extends JFrame {
      * @param panel Panel a mostrar
      */
     private void showPanel(JPanel panel) {
-        mainPanel.removeAll();
-        mainPanel.add(panel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        try {
+            System.out.println("Intentando mostrar panel: " + panel.getClass().getName());
+            mainPanel.removeAll();
+            mainPanel.add(panel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+            System.out.println("Panel mostrado exitosamente: " + panel.getClass().getName());
+        } catch (Exception e) {
+            System.err.println("Error al mostrar panel: " + e.getMessage());
+            e.printStackTrace();
+            // Mostrar un panel de error
+            JPanel errorPanel = new JPanel(new BorderLayout());
+            JLabel errorLabel = new JLabel("Error al cargar el panel: " + e.getMessage(), JLabel.CENTER);
+            errorLabel.setForeground(Color.RED);
+            errorPanel.add(errorLabel, BorderLayout.CENTER);
+            mainPanel.removeAll();
+            mainPanel.add(errorPanel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        }
+    }
+    
+    /**
+     * Muestra un panel con mensaje de "Módulo en desarrollo"
+     */
+    private void showModuloEnDesarrollo(String titulo, Color colorFondo) {
+        JPanel panel = new JPanel(new BorderLayout());
+        
+        // Panel de título
+        JPanel panelTitulo = new JPanel();
+        panelTitulo.setBackground(colorFondo);
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setForeground(Color.WHITE);
+        panelTitulo.add(lblTitulo);
+        
+        panel.add(panelTitulo, BorderLayout.NORTH);
+        
+        // Panel central con mensaje
+        JPanel panelCentral = new JPanel(new GridBagLayout());
+        JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
+        lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
+        panelCentral.add(lblMensaje);
+        
+        panel.add(panelCentral, BorderLayout.CENTER);
+        
+        showPanel(panel);
     }
     
     /**
@@ -572,6 +631,21 @@ public class MainFrame extends JFrame {
     }
     
     /**
+     * Verifica si una clase existe y puede ser instanciada
+     * @param className Nombre completo de la clase
+     * @return true si la clase existe y puede ser instanciada, false en caso contrario
+     */
+    private boolean classExists(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            System.err.println("Clase no encontrada: " + className);
+            return false;
+        }
+    }
+    
+    /**
      * Clase interna para el panel de inicio
      */
     private class HomePanel extends JPanel {
@@ -650,7 +724,15 @@ public class MainFrame extends JFrame {
             // Botones de acceso rápido
             JButton btnClientes = createMenuButton("Clientes", "/images/icons/cliente.png", e -> {
                 playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-                showPanel(new ClientesPanel());
+                try {
+                    System.out.println("Creando instancia de ClientesPanel directamente desde botón");
+                    ClientesPanel clientesPanel = new ClientesPanel();
+                    showPanel(clientesPanel);
+                } catch (Exception ex) {
+                    System.err.println("Error al crear ClientesPanel: " + ex.getMessage());
+                    ex.printStackTrace();
+                    showModuloEnDesarrollo("Gestión de Clientes (Error)", new Color(231, 76, 60));
+                }
             });
             
             JButton btnRepuestos = createMenuButton("Repuestos", "/images/icons/repuesto.png", e -> {
@@ -675,7 +757,7 @@ public class MainFrame extends JFrame {
             
             JButton btnReportes = createMenuButton("Reportes", "/images/icons/reporte.png", e -> {
                 playSafeSound(SoundManager.SOUND_BUTTON_CLICK);
-                showPanel(new ReporteInventarioPanel());
+                showModuloEnDesarrollo("Reportes y Estadísticas", new Color(22, 160, 133));
             });
             
             buttonsPanel.add(btnClientes);
@@ -693,7 +775,6 @@ public class MainFrame extends JFrame {
                 @Override
                 protected void paintComponent(Graphics g) {
                     Graphics2D g2d = (Graphics2D) g.create();
-                    g2d.setColor(new Color(0, 0, 0, 150)); // Negro semitransparente  g.create();
                     g2d.setColor(new Color(0, 0, 0, 150)); // Negro semitransparente
                     g2d.fillRect(0, 0, getWidth(), getHeight());
                     g2d.dispose();
@@ -739,314 +820,6 @@ public class MainFrame extends JFrame {
             button.setPreferredSize(new Dimension(180, 120));
             
             return button;
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de reabastecimiento
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ReabastecimientoPanel extends JPanel {
-        public ReabastecimientoPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(41, 128, 185)); // Azul
-            JLabel lblTitulo = new JLabel("Reabastecimiento de Inventario");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de órdenes de servicio
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class OrdenesServicioPanel extends JPanel {
-        public OrdenesServicioPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(46, 204, 113)); // Verde
-            JLabel lblTitulo = new JLabel("Gestión de Órdenes de Servicio");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de servicios
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ServiciosPanel extends JPanel {
-        public ServiciosPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(230, 126, 34)); // Naranja
-            JLabel lblTitulo = new JLabel("Gestión de Servicios");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de clientes
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ClientesPanel extends JPanel {
-        public ClientesPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(52, 152, 219)); // Azul
-            JLabel lblTitulo = new JLabel("Gestión de Clientes");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de facturas
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class FacturasPanel extends JPanel {
-        public FacturasPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(142, 68, 173)); // Púrpura
-            JLabel lblTitulo = new JLabel("Gestión de Facturas");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de proveedores
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ProveedoresPanel extends JPanel {
-        public ProveedoresPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(41, 128, 185)); // Azul
-            JLabel lblTitulo = new JLabel("Gestión de Proveedores");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de órdenes de compra
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class OrdenesCompraPanel extends JPanel {
-        public OrdenesCompraPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(211, 84, 0)); // Naranja oscuro
-            JLabel lblTitulo = new JLabel("Gestión de Órdenes de Compra");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de reporte de inventario
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ReporteInventarioPanel extends JPanel {
-        public ReporteInventarioPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(22, 160, 133)); // Verde azulado
-            JLabel lblTitulo = new JLabel("Reporte de Inventario");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de reporte de servicios
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ReporteServiciosPanel extends JPanel {
-        public ReporteServiciosPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(41, 128, 185)); // Azul
-            JLabel lblTitulo = new JLabel("Reporte de Servicios");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de reporte de ventas
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ReporteVentasPanel extends JPanel {
-        public ReporteVentasPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(39, 174, 96)); // Verde
-            JLabel lblTitulo = new JLabel("Reporte de Ventas");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
-        }
-    }
-    
-    /**
-     * Clase interna para el panel de reporte de proveedores
-     * Nota: Esta es una implementación básica, se debe completar según los requisitos
-     */
-    private class ReporteProveedoresPanel extends JPanel {
-        public ReporteProveedoresPanel() {
-            setLayout(new BorderLayout());
-            
-            // Panel de título
-            JPanel panelTitulo = new JPanel();
-            panelTitulo.setBackground(new Color(155, 89, 182)); // Púrpura
-            JLabel lblTitulo = new JLabel("Reporte de Proveedores");
-            lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-            lblTitulo.setForeground(Color.WHITE);
-            panelTitulo.add(lblTitulo);
-            
-            add(panelTitulo, BorderLayout.NORTH);
-            
-            // Panel central con mensaje de implementación pendiente
-            JPanel panelCentral = new JPanel(new GridBagLayout());
-            JLabel lblMensaje = new JLabel("Módulo en desarrollo. Próximamente disponible.");
-            lblMensaje.setFont(new Font("Arial", Font.ITALIC, 16));
-            panelCentral.add(lblMensaje);
-            
-            add(panelCentral, BorderLayout.CENTER);
         }
     }
 }

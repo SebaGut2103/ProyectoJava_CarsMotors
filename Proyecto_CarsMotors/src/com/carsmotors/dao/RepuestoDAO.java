@@ -162,6 +162,50 @@ public class RepuestoDAO {
     }
     
     /**
+     * Busca repuestos por tipo
+     */
+    public List<Repuesto> buscarPorTipo(String tipo) {
+        List<Repuesto> repuestos = new ArrayList<>();
+        String sql = "SELECT * FROM Repuesto WHERE tipo = ? ORDER BY nombre";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, tipo);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                repuestos.add(extraerRepuestoDeResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar repuestos por tipo: " + e.getMessage());
+        }
+        
+        return repuestos;
+    }
+    
+    /**
+     * Busca repuestos por nombre (búsqueda parcial)
+     */
+    public List<Repuesto> buscarPorNombre(String nombre) {
+        List<Repuesto> repuestos = new ArrayList<>();
+        String sql = "SELECT * FROM Repuesto WHERE nombre LIKE ? ORDER BY nombre";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, "%" + nombre + "%");
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                repuestos.add(extraerRepuestoDeResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar repuestos por nombre: " + e.getMessage());
+        }
+        
+        return repuestos;
+    }
+    
+    /**
      * Extrae un objeto Repuesto de un ResultSet
      */
     private Repuesto extraerRepuestoDeResultSet(ResultSet rs) throws SQLException {
@@ -178,6 +222,7 @@ public class RepuestoDAO {
         repuesto.setFechaIngreso(rs.getDate("fecha_ingreso"));
         repuesto.setVidaUtilMeses(rs.getInt("vida_util_meses"));
         repuesto.setEstado(rs.getString("estado"));
+        
         return repuesto;
     }
 }
