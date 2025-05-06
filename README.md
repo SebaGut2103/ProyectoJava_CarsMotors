@@ -1,111 +1,176 @@
-# Título del Proyecto
+# 🚗 CarMotors Automotive Workshop System
 
-_Acá va un párrafo que describa lo que es el proyecto_
+This project implements the **CarMotors Automotive Workshop System**, designed to manage:
 
-## Comenzando 🚀
+* Spare parts inventory  
+* Maintenance services  
+* Clients and vehicles  
+* Electronic invoicing  
+* Suppliers  
+* Special activities
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
-
-Mira **Deployment** para conocer como desplegar el proyecto.
-
-
-### Pre-requisitos 📋
-
-_Que cosas necesitas para instalar el software y como instalarlas_
-
-```
-Da un ejemplo
-```
-
-### Instalación 🔧
-
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
-
-_Dí cómo será ese paso_
-
-```
-Da un ejemplo
-```
-
-_Y repite_
-
-```
-hasta finalizar
-```
-
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
-
-## Ejecutando las pruebas ⚙️
-
-_Explica como ejecutar las pruebas automatizadas para este sistema_
-
-### Analice las pruebas end-to-end 🔩
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
-
-### Y las pruebas de estilo de codificación ⌨️
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
-
-## Despliegue 📦
-
-_Agrega notas adicionales sobre como hacer deploy_
-
-## Construido con 🛠️
-
-_Menciona las herramientas que utilizaste para crear tu proyecto_
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
-
-## Contribuyendo 🖇️
-
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
-
-## Wiki 📖
-
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/tu/proyecto/wiki)
-
-## Versionado 📌
-
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
-
-## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Andrés Villanueva** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Fulanito Detal** - *Documentación* - [fulanitodetal](#fulanito-de-tal)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
-
-## Expresiones de Gratitud 🎁
-
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
-* Da las gracias públicamente 🤓.
-* Dona con cripto a esta dirección: `0xf253fc233333078436d111175e5a76a649890000`
-* etc.
-
-
+The system is developed in **Java** using **Maven** and follows the **MVC (Model - View - Controller)** component-based architecture, including complete documentation (ER diagrams, class diagrams, SQL scripts, etc.).
 
 ---
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊�
-Comenta a otros sobre este proyecto 📢
-Invita una cerveza 🍺 o un café ☕ a alguien del equipo.
-Da las gracias públicamente 🤓.
-Dona con cripto a esta dirección: 0xf253fc233333078436d111175e5a76a649890000
-etc.
+
+## 📑 System Overview
+
+The main goal is to efficiently manage all operations of an automotive workshop. The system provides:
+
+* Client and vehicle registration  
+* Service order management  
+* Tracking of services and used spare parts  
+* Electronic invoice generation  
+* Supplier and purchase administration  
+* Execution of special activities (campaigns, inspections, etc.)
+
+In addition, the system connects to a MySQL database, ensuring persistence and scalability.
+
+---
+
+## ⚙️ Project Architecture
+
+* **Model (`model/`):**
+  * `Cliente.java`
+  * `DetalleServicio.java`
+  * `Factura.java`
+  * `OrdenServicio.java`
+  * `Proveedor.java`
+  * `Repuesto.java`
+  * `RepuestoUsado.java`
+  * `Servicio.java`
+  * `Vehiculo.java`
+
+* **Database (`database/`):**
+  * `DatabaseConnection.java` → Singleton class to manage the MySQL connection.
+
+* **Controller (`controller/`):**
+  * `ClienteController.java`
+  * `FacturaController.java`
+  * `OrdenServicioController.java`
+  * `ProveedorController.java`
+  * `RepuestoController.java`
+
+* **View (`view/`):**
+  * `ClienteDialog.java`
+  * `FacturaDialog.java`
+  * `FacturasPanel.java`
+  * `MainFrame.java`
+  * `OrdenServicioDialog.java`
+  * `OrdenesServicioPanel.java`
+  * `ProveedorDialog.java`
+  * `ProveedoresPanel.java`
+  * `RepuestoDialog.java`
+  * `RepuestosPanel.java`
+
+---
+
+## 🏗️ Current Project Structure
+
+```
+src/
+└── main/
+└── java/
+└── com/carsmotors/
+├── model/
+│ ├── Cliente.java
+│ ├── DetalleServicio.java
+│ ├── Factura.java
+│ ├── OrdenServicio.java
+│ ├── Proveedor.java
+│ ├── Repuesto.java
+│ ├── RepuestoUsado.java
+│ ├── Servicio.java
+│ └── Vehiculo.java
+└── database/
+└── DatabaseConnection.java
+```
+
+---
+
+## 🔌 Database Connection (`DatabaseConnection.java`)
+
+The system uses the **Singleton** pattern to ensure only one database connection instance.
+
+```java
+public class DatabaseConnection {
+    private static DatabaseConnection instance;
+    private Connection connection;
+    private static final String URL = "jdbc:mysql://localhost:3306/taller_automotriz";
+    private static final String USER = "root";
+    private static final String PASSWORD = "oscar2429";
+
+    private DatabaseConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error loading MySQL driver: " + e.getMessage());
+        }
+    }
+
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                System.out.println("Database connection established");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error connecting to the database: " + e.getMessage());
+        }
+        return connection;
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing the connection: " + e.getMessage());
+        }
+    }
+}
+```
+
+## 🗄️ Database Model (MySQL)
+* **Includes the following tables:**
+
+  * `cliente`
+ 
+  * `vehiculo`
+ 
+  * `tecnico`
+ 
+  *  `servicio`
+ 
+  * `orden_servicio`
+ 
+  * `detalle_orden_servicio`
+ 
+  * `repuesto`
+ 
+  * `factura`
+ 
+  * `proveedor`
+ 
+  * `lote`
+ 
+  * `orden_compra`
+ 
+  * `campana`
+ 
+  * `cita_campana`
+ 
+  * `inspeccion`
+
+It includes primary keys, foreign keys, constraints, and enums to ensure data integrity.
+
+
